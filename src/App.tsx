@@ -6,7 +6,7 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [balancingAuthority, setBalancingAuthority] = useState(1)
+  const [balancingAuthority, setBalancingAuthority] = useState('')
 
   return (
     <>
@@ -28,7 +28,7 @@ function App() {
         </p>
       </div>
       <div className="card">
-        <Select placeholder='Select Balancing Authority'>
+        <Select placeholder='Select Balancing Authority' onChange = {val => setBalancingAuthority(val)}>
           <option value='AECI'>Associated Electric Cooperative, Inc.</option>
           <option value='AVA'>Avista Corporation</option>
           <option value='AVRN'>Avangrid Renewables, LLC</option>
