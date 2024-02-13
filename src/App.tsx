@@ -95,7 +95,6 @@ function App() {
           <option value='WWA'>NaturEner Wind Watch, LLC</option>
           <option value='YAD'>Alcoa Power Generating, Inc. - Yadkin Division</option>
         </Select>
-        <button onChange=
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
