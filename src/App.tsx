@@ -28,7 +28,7 @@ function App() {
         </p>
       </div>
       <div className="card">
-        <Select placeholder='Select Balancing Authority' onChange = {val => setBalancingAuthority(val)}>
+        <Select placeholder='Select Balancing Authority' onChange = {(e) => setBalancingAuthority(e.target.value)}>
           <option value='AECI'>Associated Electric Cooperative, Inc.</option>
           <option value='AVA'>Avista Corporation</option>
           <option value='AVRN'>Avangrid Renewables, LLC</option>
