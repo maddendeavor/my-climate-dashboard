@@ -13,7 +13,7 @@ export const Arc = ({x, y}: Coordinates) => {
     .attr("style", "width: 100%; height: auto;");
 
   const container = svg.append("g")
-    .attr("transform", `translate(${width/2}, ${height/2})`); // move origin to center
+    .attr("transform", `translate(${width/2}, ${height*0.75})`); // move origin to center
 
 
   const arcData = getMeterDimensions(6)

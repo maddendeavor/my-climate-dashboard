@@ -1,21 +1,18 @@
 
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import axios from 'axios'
-import { Box, Text, VStack } from '@chakra-ui/react'
+import { Box, HStack, Spinner, Text, VStack } from '@chakra-ui/react'
 
 import { Arc } from './Arc'
 import { BalancingAuthorityDropdown } from './Dropdown'
 import { getIndicatorCoordinates } from './utils'
-import { Coordinates } from './types'
+import { Coordinates, DemandData } from './types'
+import { Card } from './Card'
 
-type DemandData = {
-  current: number;
-  thresholdLow: number;
-  thresholdHigh: number;
-  average: number
-}
+
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true)
   const [balancingAuthority, setBalancingAuthority] = useState('AECI')
   const [demandData, setDemandData] = useState<DemandData>()
   const [coordinates, setCoordinates] = useState<Coordinates>()
@@ -27,6 +24,7 @@ function App() {
 
   const fetchBAStatus = useCallback(async (ba: string) => {
    if (ba !== '') {
+    setIsLoading(true)
      const resp = await axios.post('/api/my-climate-dashboard/green-energy-stats', {
        ba_name: ba
      })
@@ -37,6 +35,7 @@ function App() {
       thresholdHigh: data.demand_threshold_high,
       average: data.demand_ratio_mean
      })
+     setIsLoading(false)
    }
   }, [])
 
@@ -53,7 +52,7 @@ function App() {
 
   
   useEffect(() => {
-    if (ref.current && !!coordinates) {
+    if (ref.current && !isLoading && !!coordinates) {
       const arc = Arc(coordinates)
 
       if (arc) {
@@ -63,7 +62,7 @@ function App() {
         }
       }
     }
-  }, [coordinates])
+  }, [coordinates, isLoading])
 
   return (
     <VStack p={10}>
@@ -71,7 +70,15 @@ function App() {
       <Box>
         <BalancingAuthorityDropdown onChange={onChange} />
       </Box>
-      <Box p={5} ref={ref} />
+      {isLoading ? 
+        <Box mt={10}>
+          <Spinner />
+        </Box> : (
+        <HStack justifyContent="center">
+          <Box p={5} ref={ref} />
+          <Card data={demandData as DemandData} />
+        </HStack>
+      )}
     </VStack>
   )
 }

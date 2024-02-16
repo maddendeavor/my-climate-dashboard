@@ -18,3 +18,7 @@ export const getIndicatorCoordinates = (ratio: number): Coordinates => {
   const r = 70
   return { x:  -r * Math.cos(angle) as number, y: -r * Math.sin(angle)}
 }
+
+export const toPercent = (decimal: number): string => {
+  return `${Math.floor(decimal*100)}%`
+}
