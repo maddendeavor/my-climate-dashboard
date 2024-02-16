@@ -1,22 +1,19 @@
 
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
-import { Box, HStack, Spinner, Text, VStack } from '@chakra-ui/react'
+import { Box, Spinner, Text, VStack } from '@chakra-ui/react'
 
-import { Arc } from './Arc'
 import { BalancingAuthorityDropdown } from './Dropdown'
-import { getIndicatorCoordinates } from './utils'
-import { Coordinates, DemandData } from './types'
-import { Card } from './Card'
+import {  EnergyMetrics } from './types'
+import { MetricsSection } from './MetricsSection'
 
 
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [balancingAuthority, setBalancingAuthority] = useState('AECI')
-  const [demandData, setDemandData] = useState<DemandData>()
-  const [coordinates, setCoordinates] = useState<Coordinates>()
-  const ref = useRef<HTMLDivElement>(null)
+  const [demandData, setDemandData] = useState<EnergyMetrics>()
+  const [greenEnergyData, setGreenEnergyData] = useState<EnergyMetrics>()
 
   const onChange = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     setBalancingAuthority(e.target.value)
@@ -35,34 +32,21 @@ function App() {
       thresholdHigh: data.demand_threshold_high,
       average: data.demand_ratio_mean
      })
+     setGreenEnergyData({
+      current: data.green_ratio_current,
+      thresholdLow: data.green_threshold_low,
+      thresholdHigh: data.green_threshold_high,
+      average: data.green_ratio_mean
+     })
      setIsLoading(false)
    }
   }, [])
-
-  useEffect(() => {
-    if (demandData?.current) {
-      setCoordinates(getIndicatorCoordinates(demandData.current))
-    }
-  }, [demandData])
   
   
   useEffect(()=> {
    fetchBAStatus(balancingAuthority)
   }, [balancingAuthority])
 
-  
-  useEffect(() => {
-    if (ref.current && !isLoading && !!coordinates) {
-      const arc = Arc(coordinates)
-
-      if (arc) {
-        ref.current.appendChild(arc)
-        return () => {
-          ref.current?.removeChild(arc)
-        }
-      }
-    }
-  }, [coordinates, isLoading])
 
   return (
     <VStack p={10}>
@@ -73,12 +57,18 @@ function App() {
       {isLoading ? 
         <Box mt={10}>
           <Spinner />
-        </Box> : (
-        <HStack justifyContent="center">
-          <Box p={5} ref={ref} />
-          <Card data={demandData as DemandData} />
-        </HStack>
-      )}
+        </Box> : 
+        <>
+          <MetricsSection 
+            isLoading={isLoading} 
+            data={demandData as EnergyMetrics} 
+            isDemand />
+          <MetricsSection 
+            isLoading={isLoading}
+            data={greenEnergyData as EnergyMetrics}
+          />
+        </>
+      }
     </VStack>
   )
 }

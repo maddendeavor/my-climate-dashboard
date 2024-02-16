@@ -8,11 +8,11 @@ type Coordinates = {
     y: number
 }  
 
-type DemandData = {
+type EnergyMetrics = {
     current: number;
     thresholdLow: number;
     thresholdHigh: number;
     average: number
 }
 
-export type { AngleMeasurements, Coordinates, DemandData }
+export type { AngleMeasurements, Coordinates, EnergyMetrics }

@@ -2,7 +2,8 @@ import * as d3 from 'd3'
 import { getMeterDimensions } from './utils';
 import { Coordinates } from './types';
 
-export const Arc = ({x, y}: Coordinates) => {
+export const Arc = ({coordinates, reverseColors}: {coordinates: Coordinates, reverseColors?: boolean}) => {
+  const { x, y } = coordinates
   const width = 200;
   const height = width;
 
@@ -17,7 +18,10 @@ export const Arc = ({x, y}: Coordinates) => {
 
 
   const arcData = getMeterDimensions(6)
-  const colors = d3.schemeRdYlGn[6].map(c => c).reverse()
+  let colors = d3.schemeRdYlGn[6]
+  if (reverseColors) {
+    colors = colors.map(c => c).reverse()
+  }
   const colorScale = d3.scaleOrdinal(colors)
 
   const arc = d3.arc()
