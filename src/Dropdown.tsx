@@ -1,4 +1,5 @@
 import { ChangeEvent } from "react"
+import { Select } from '@chakra-ui/react'
 
 const baOptions= [
     {value: 'AECI', label: 'Associated Electric Cooperative, Inc.'},
@@ -70,9 +71,9 @@ const baOptions= [
 
 export const BalancingAuthorityDropdown = ({ onChange }: { onChange: (val: ChangeEvent<HTMLSelectElement>) => void }) => {
      return (
-        <select onChange={onChange}>
+        <Select onChange={onChange}>
             {baOptions.map((ba, i)=> <option key={i} value={ba.value}>{ba.label}</option>)}
-        </select>
+        </Select>
      )
 }
 

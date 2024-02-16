@@ -1,19 +1,12 @@
-type EnergySourcesBreakdown = {
-    nuclear?: number,
-    solar?: number,
-    coal?: number
-}
+type AngleMeasurements = {
+    startAngle: number;
+    endAngle: number;
+  }
+  
+  type Coordinates = {
+    x: number;
+    y: number
+  }  
 
-type GreenEnergyStats = {
-    created: string,
-    sw_version: number,
-    ba_name: string,
-    source_ratio_current: EnergySourcesBreakdown,
-    green_ratio_current: number,
-    green_ratio_mean: number,
-    green_threshold_low: number,
-    green_threshold_high: number,
-    alert_text: string,
-}
 
-export type { EnergySourcesBreakdown, GreenEnergyStats}
+export type { AngleMeasurements, Coordinates }
